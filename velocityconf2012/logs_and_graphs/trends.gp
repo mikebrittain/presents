@@ -1,8 +1,7 @@
 #!/usr/local/bin/gnuplot
 
 reset
-
-set terminal png
+set terminal pngcairo enhanced font "arial,11"  size 800,600                            
 set output 'trends.png'
 
 set grid
@@ -10,7 +9,6 @@ set title "Listings, generation times (ms)"
 set ylabel "millisec"
 set yrange [0:*]
 set key below
-set term png size 800,600
 set style fill solid 0.20 border
 
 set xdata time
