@@ -1,0 +1,12 @@
+# Get date, microseconds from log file
+cat access.log | awk '/GET \/rss_shop/ {print $8, $(NF-1)}'
+
+# Munge log entries into date, microseconds
+grep "GET /listings" access.log | perl -p -e "s/.*\[.*\d{4}:(\d{2}):(\d{2}):\d{2}.*\]/\1:\2/" | awk '{print $1, $(NF-1)}' > /tmp/response_times.dat
+
+# response_times.dat format
+# time value
+11/May/2011:17:08:50 340404
+11/May/2011:17:08:50 400214
+11/May/2011:17:08:50 260223
+
