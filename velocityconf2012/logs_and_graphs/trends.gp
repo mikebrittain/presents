@@ -1,7 +1,7 @@
 #!/usr/local/bin/gnuplot
 
 reset
-set terminal pngcairo enhanced font "arial,11"  size 800,600                            
+set terminal pngcairo enhanced font "arial,11"  size 800,400
 set output 'trends.png'
 
 set grid
