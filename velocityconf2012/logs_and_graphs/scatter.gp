@@ -1,7 +1,7 @@
 #!/usr/local/bin/gnuplot
 
 reset
-set terminal pngcairo enhanced font "arial,11"  size 800,600
+set terminal pngcairo enhanced font "gill sans,12"  size 800,600
 set output 'response_times.png'
 
 set title "Listings, generation times (ms)"
