@@ -1,12 +1,22 @@
+# Sample log format
+LogFormat "%{True-Client-IP}i %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %{display_mode}n %{etsy_user_id}n %{php_bytes}n %{php_microsec}n %D" etsylogformat
+
+# Sample log entry
+web0060 66.249.71.110 - - [24/Aug/2011:04:16:52 +0000] "GET /listing/12189259/tropical-etched-pair-of-lampwork-glass HTTP/1.1" 200 11034 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" desktop - 13399576 505780 554876
+
 # Get date, microseconds from log file
-cat access.log | awk '/GET \/rss_shop/ {print $8, $(NF-1)}'
+cat access.log | awk '/GET \/listing/ {print $5, $(NF-1)/1000}' | sed "s/\[//" > response_times.dat
 
+# Sample results... (see response_times.dat)
+11/May/2011:17:08:53 468.585
+11/May/2011:17:08:54 311.455
+11/May/2011:17:08:53 376.745
+11/May/2011:17:08:54 322.278
+
+
+
+
+#########
 # Munge log entries into date, microseconds
-grep "GET /listings" access.log | perl -p -e "s/.*\[.*\d{4}:(\d{2}):(\d{2}):\d{2}.*\]/\1:\2/" | awk '{print $1, $(NF-1)}' > /tmp/response_times.dat
-
-# response_times.dat format
-# time value
-11/May/2011:17:08:50 340404
-11/May/2011:17:08:50 400214
-11/May/2011:17:08:50 260223
+grep "GET /listing" access.log | perl -p -e "s/.*\[.*\d{4}:(\d{2}):(\d{2}):\d{2}.*\]/\1:\2/" | awk '{print $1, $(NF-1)}' > /tmp/response_times.dat
 
