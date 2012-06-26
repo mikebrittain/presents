@@ -14,7 +14,7 @@ class PerfLogster(LogsterParser):
         self.signed_out_ms = []
         
         # Pattern to match lines we are interested in and capturing fields.
-        self.reg = re.compile('.* (?P<etsy_user_id>[\d\-]+) (?P<php_bytes>\d+) (?P<php_microsec>\d+) (?P<apache_microsec>\d+)$')
+        self.reg = re.compile('.* (?P<display_mode>\w+) (?P<user_id>[\d\-]+) (?P<php_bytes>\d+) (?P<php_usec>\d+) (?P<apache_usec>\d+)$')
 
     def parse_line(self, line):
         '''Digest the contents of log file one line at a time, updating
@@ -25,10 +25,10 @@ class PerfLogster(LogsterParser):
             regMatch = self.reg.match(line)
 
             if regMatch:
-                linebits = regMatch.groupdict()
-                php_ms = int(linebits['php_microsec']) / 1000
-                etsy_user_id = linebits['etsy_user_id']
-                if (etsy_user_id == "-"):
+                fields = regMatch.groupdict()
+                php_ms = int(fields['php_usec']) / 1000
+                user_id = fields['user_id']
+                if (user_id == "-"):
                     self.signed_out_ms.append(php_ms)
                 else:
                     self.signed_in_ms.append(php_ms)
@@ -36,8 +36,8 @@ class PerfLogster(LogsterParser):
             else:
                 raise LogsterParsingException, "regmatch failed to match"
 
-        except Exception, e:
-            raise LogsterParsingException, "regmatch or contents failed with %s" % e
+    except Exception, e:
+        raise LogsterParsingException, "regmatch or contents failed with %s" % e
 
 
     def get_state(self, duration):
